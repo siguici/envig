@@ -2,7 +2,7 @@
 
 ![Envig](https://img.shields.io/badge/V-Module-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Status](https://img.shields.io/badge/status-active-brightgreen.svg)
+![CI](https://github.com/siguici/envig/workflows/CI/badge.svg)
 
 A lightweight and flexible configuration and environment manager for V.
 It allows you to load configurations from files, directories, or raw text,
