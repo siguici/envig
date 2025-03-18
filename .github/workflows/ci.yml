@@ -1,0 +1,26 @@
+name: CI
+
+on: ['push', 'pull_request']
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+    name: 👷 CI Envig on ${{ matrix.os }}
+
+    steps:
+      - name: 🚚 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Vlang
+        uses: siguici/setup-v@v0
+
+      - name: ✅ Verify Code Format
+        run: v fmt -verify .
+
+      - name: 🧪 Run V Tests
+        run: v test .
