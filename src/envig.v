@@ -5,7 +5,7 @@ import toml
 
 pub type Any = toml.Any
 
-pub const default_envig = envig()
+pub const default = envig()
 
 @[params]
 pub struct EnvigOptions {
@@ -63,13 +63,13 @@ pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
 }
 
 pub fn config(path string) Any {
-	return default_envig.config(path)
+	return default.config(path)
 }
 
 pub fn env(name string) string {
-	return default_envig.env(name)
+	return default.env(name)
 }
 
 pub fn get(key string) string {
-	return default_envig.get(key)
+	return default.get(key)
 }
