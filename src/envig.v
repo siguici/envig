@@ -3,8 +3,6 @@ module envig
 import os
 import toml
 
-pub type Any = toml.Any
-
 pub const default = envig()
 
 @[params]
@@ -34,11 +32,11 @@ pub fn Envig.new(options EnvigOptions) Envig {
 	}
 }
 
-pub fn (e Envig) config(path string) Any {
+pub fn (e Envig) config(path string) toml.Any {
 	return e.ConfigManager.value(path)
 }
 
-pub fn (mut e Envig) config_or_default(path string, default toml.Any) Any {
+pub fn (mut e Envig) config_or_default(path string, default toml.Any) toml.Any {
 	return e.ConfigManager.value_or_default(path, default)
 }
 
@@ -62,7 +60,7 @@ pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
 	return e.expand(e.config_or_default(key, default))
 }
 
-pub fn config(path string) Any {
+pub fn config(path string) toml.Any {
 	return default.config(path)
 }
 
