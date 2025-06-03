@@ -22,13 +22,26 @@ pub mut:
 }
 
 pub fn Config.new(raw string) Config {
-	data := if os.is_file(raw) {
-		toml.parse_file(raw) or { panic('Enable to parse ${raw}: ${err}') }
-	} else {
-		toml.parse_text(raw) or { panic('Enable to parse text: ${err}') }
+	return Config.new_opt(raw) or {
+		eprintln(err)
+		Config{}
 	}
+}
 
-	return Config{data}
+pub fn Config.new_or_panic(raw string) Config {
+	return Config.new_opt(raw) or { panic(err) }
+}
+
+pub fn Config.new_opt(raw string) !Config {
+	return Config{parse(raw)!}
+}
+
+fn parse(raw string) !toml.Doc {
+	return if os.is_file(raw) {
+		toml.parse_file(raw)!
+	} else {
+		toml.parse_text(raw)!
+	}
 }
 
 pub fn ConfigManager.new(opts ConfigOptions) ConfigManager {
