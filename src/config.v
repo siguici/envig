@@ -52,7 +52,7 @@ pub fn ConfigManager.new(opts ConfigOptions) ConfigManager {
 }
 
 pub fn ConfigManager.load(opts ConfigOptions) ConfigManager {
-	mut cm := ConfigManager.new(dir: opts.dir, file: opts.file)
+	mut cm := ConfigManager.new(opts)
 
 	return cm.load('')
 }
