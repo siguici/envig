@@ -3,6 +3,10 @@ module envig
 import os
 import toml
 
+pub type Any = toml.Any
+
+pub const default_envig = envig()
+
 @[params]
 pub struct EnvigOptions {
 	dir  string  = 'config'
@@ -17,6 +21,10 @@ pub struct Envig {
 }
 
 pub fn envig(options EnvigOptions) Envig {
+	return Envig.new(options)
+}
+
+pub fn Envig.new(options EnvigOptions) Envig {
 	return Envig{
 		ConfigManager: ConfigManager.load(dir: options.dir, file: options.file)
 		dotenv:        Dotenv.load(
@@ -26,11 +34,11 @@ pub fn envig(options EnvigOptions) Envig {
 	}
 }
 
-pub fn (e Envig) config(path string) toml.Any {
+pub fn (e Envig) config(path string) Any {
 	return e.ConfigManager.value(path)
 }
 
-pub fn (mut e Envig) config_or_default(path string, default toml.Any) toml.Any {
+pub fn (mut e Envig) config_or_default(path string, default toml.Any) Any {
 	return e.ConfigManager.value_or_default(path, default)
 }
 
@@ -52,4 +60,16 @@ pub fn (e Envig) get(key string) string {
 
 pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
 	return e.expand(e.config_or_default(key, default))
+}
+
+pub fn config(path string) Any {
+	return default_envig.config(path)
+}
+
+pub fn env(name string) string {
+	return default_envig.env(name)
+}
+
+pub fn get(key string) string {
+	return default_envig.get(key)
 }
