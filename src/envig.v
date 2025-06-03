@@ -18,7 +18,7 @@ pub struct Envig {
 
 pub fn envig(options EnvigOptions) Envig {
 	return Envig{
-		ConfigManager: ConfigManager.new(dir: options.dir, file: options.file)
+		ConfigManager: ConfigManager.load(dir: options.dir, file: options.file)
 		dotenv:        Dotenv.load(
 			type: options.env
 			vars: options.vars
