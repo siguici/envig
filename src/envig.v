@@ -3,8 +3,6 @@ module envig
 import os
 import toml
 
-pub const default = envig()
-
 @[params]
 pub struct EnvigOptions {
 	dir  string  = 'config'
@@ -61,13 +59,13 @@ pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
 }
 
 pub fn config(path string) toml.Any {
-	return default.config(path)
+	return envig().config(path)
 }
 
 pub fn env(name string) string {
-	return default.env(name)
+	return envig().env(name)
 }
 
 pub fn get(key string) string {
-	return default.get(key)
+	return envig().get(key)
 }
