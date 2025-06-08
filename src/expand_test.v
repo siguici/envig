@@ -2,10 +2,32 @@ module envig
 
 fn test_expand() {
 	vars := {
-		'first_name': 'Kessé Emmanuel'
-		'last_name':  'Sigui'
+		'NAME':  'Emmanuel'
+		'EMPTY': ''
+		'UNSET': ''
 	}
 
-	assert expand('\$first_name \$last_name', vars) == 'Kessé Emmanuel Sigui'
-	assert expand('\${first_name} \${last_name}', vars) == 'Kessé Emmanuel Sigui'
+	// Basic variable expansion
+	assert expand('Hello, \$NAME!', vars) == 'Hello, Emmanuel!'
+	assert expand('Hello, \${NAME}!', vars) == 'Hello, Emmanuel!'
+
+	// Default value with ':-'
+	assert expand('Hello, \${MISSING:-World}!', vars) == 'Hello, World!'
+
+	// Default value with '-'
+	assert expand('Hello, \${MISSING-World}!', vars) == 'Hello, World!'
+	assert expand('Hello, \${NAME-World}!', vars) == 'Hello, Emmanuel!'
+
+	// Alternative value with ':+'
+	assert expand('Hello, \${NAME:+World}!', vars) == 'Hello, World!'
+	assert expand('Hello, \${EMPTY:+World}!', vars) == 'Hello, !'
+
+	// Alternative value with '+'
+	assert expand('Hello, \${NAME+World}!', vars) == 'Hello, World!'
+	assert expand('Hello, \${MISSING+World}!', vars) == 'Hello, !'
+
+	// Mixed usage
+	assert expand('User: \${USER:-guest}, Home: \${HOME:-/home/guest}', {
+		'USER': 'siguici'
+	}) == 'User: siguici, Home: /home/guest'
 }
