@@ -144,23 +144,34 @@ mut e := envig.envig(envig.EnvigOptions{
 
 ## 📚 API Reference
 
-### **ConfigManager** (Configuration Handling)
+### Config & ConfigManager (Configuration Handling)
 
-| Method                           | Description                              |
-| -------------------------------- | ---------------------------------------- |
-| `load(file string)`              | Load a single TOML file as configuration |
-| `load_dir(dir string)`           | Load all TOML files from a directory     |
-| `load_text(text string)`         | Load configuration from raw TOML text    |
-| `value(key string)`              | Get a configuration value                |
-| `value_or_default(key, default)` | Get a value or fallback to a default     |
+| Method                                                         | Description                                                        |
+| -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Config.new(raw string)                                       | Creates a config from raw text or TOML file (panics on error).     |
+| Config.new_opt(raw string) !Config                           | Optional version returning error instead of panic.                 |
+| ConfigManager.new(opts ConfigOptions)                        | Creates a config manager with options (dir, file).             |
+| ConfigManager.load(opts ConfigOptions)                       | Loads configuration from file, directory or raw text.              |
+| ConfigManager.load_dir(path string)                          | Loads all TOML files in a directory.                               |
+| ConfigManager.load_file(path string)                         | Loads a single TOML file.                                          |
+| ConfigManager.load_text(text string)                         | Loads config from raw TOML text.                                   |
+| ConfigManager.value(path string)                             | Retrieves a value by key (supports nested keys like config.key). |
+| ConfigManager.value_or_default(key string, default toml.Any) | Retrieves a value or returns a default.                            |
 
-### **Env** (Environment Variable Handling)
+### Env & Dotenv (Environment Variable Handling)
 
-| Method              | Description                             |
-| ------------------- | --------------------------------------- |
-| `load(file string)` | Load an `.env` file                     |
-| `get(key string)`   | Retrieve an environment variable        |
-| `expand()`          | Expand variables inside other variables |
+| Method                                 | Description                                               |
+| -------------------------------------- | --------------------------------------------------------- |
+| Env.new(options EnvOptions)          | Creates an environment with a map of variables.           |
+| Env.set(key, value)                  | Sets an environment variable.                             |
+| Env.get(key)                         | Retrieves a variable (returns empty if missing).          |
+| Env.get_or_default(key, default)     | Retrieves a variable or returns default.                  |
+| Env.apply()                          | Applies all variables to the OS environment.              |
+| Dotenv.load(options DotenvOptions)   | Loads a .env file (appends .APP_ENV if defined).      |
+| Dotenv.load_multiple(files []string) | Loads multiple .env files.                              |
+| Dotenv.expand()                      | Expands variables inside other variables (e.g. ${VAR}). |
+
+---
 
 ### **Envig** (Unified Manager)
 
