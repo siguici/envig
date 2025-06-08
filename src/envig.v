@@ -54,6 +54,14 @@ pub fn (e Envig) get(key string) string {
 	return e.expand(e.config(key))
 }
 
+pub fn (e Envig) value(key string) toml.Any {
+	return toml.Any(e.get(key))
+}
+
+pub fn (e Envig) get_as[T](key string) T {
+	return T(e.value(key))
+}
+
 pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
 	return e.expand(e.config_or_default(key, default))
 }
@@ -68,4 +76,12 @@ pub fn env(name string) string {
 
 pub fn get(key string) string {
 	return envig().get(key)
+}
+
+pub fn value(key string) toml.Any {
+	return envig().value(key)
+}
+
+pub fn get_as[T](key string) T {
+	return envig().get_as(key)
 }
