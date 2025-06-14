@@ -43,19 +43,40 @@ import siguici.envig
 
 ### 🔹 Loading Configuration
 
+#### Use default options
+
+```v
+import siguici.envig
+
+mut config := envig.ConfigManager.load()
+println(config.value('database.host'))
+```
+
+#### Specify the config file and/or directory
+
+```v
+import siguici.envig
+
+mut config := envig.ConfigManager.load(
+  file: 'config.toml'
+  dir: 'config'
+)
+println(config.value('database.host'))
+```
+
 #### From a Single File
 
 ```v
 import siguici.envig
 
-mut config := envig.ConfigManager.load(file: 'config.toml')
+mut config := envig.Config.new('config.toml')
 println(config.value('database.host'))
 ```
 
 #### From a Directory
 
 ```v
-mut config := envig.ConfigManager.load_dir('config')
+mut config := envig.Config.new('config')
 println(config.value('app.debug'))
 ```
 
@@ -67,7 +88,7 @@ toml_text := """
 host = "localhost"
 port = 5432
 """
-mut config := envig.ConfigManager.load_text(toml_text)
+mut config := envig.Config.new(toml_text)
 println(config.value('database.port')) // 5432
 ```
 
@@ -177,7 +198,7 @@ mut e := envig.envig(envig.EnvigOptions{
 
 | Method                             | Description                                          |
 | ---------------------------------- | ---------------------------------------------------- |
-| `envig(options EnvigOptions)`      | Initialize a new Envig instance                      |
+| `new(options EnvigOptions)`      | Initialize a new Envig instance                      |
 | `config(path string)`              | Get a configuration value (`toml.Any`)               |
 | `env(name string)`                 | Get an environment variable                          |
 | `get(key string)`                  | Get config with expansion                            |
