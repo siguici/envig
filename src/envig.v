@@ -17,6 +17,10 @@ pub struct Envig {
 }
 
 pub fn envig(options EnvigOptions) Envig {
+	return new(options)
+}
+
+pub fn new(options EnvigOptions) Envig {
 	return Envig.new(options)
 }
 
