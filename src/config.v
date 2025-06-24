@@ -118,7 +118,9 @@ pub fn (mut cm ConfigManager) load_dir(path string) ConfigManager {
 	files := os.ls(real_path) or { panic('Enable to list ${real_path}: ${err}') }
 
 	for file in files {
-		cm.load('${path}/${file}')
+		if file.ends_with('.toml') {
+			cm.load('${path}/${file}')
+		}
 	}
 
 	return cm
