@@ -1,17 +1,7 @@
-module envig
+module config
 
-import toml
 import os
-
-pub struct Config {
-	data toml.Doc
-}
-
-@[params]
-pub struct ConfigOptions {
-	dir  string = 'config'
-	file string = 'config.toml'
-}
+import toml
 
 pub struct ConfigManager {
 	dir  string = 'config'
@@ -19,29 +9,6 @@ pub struct ConfigManager {
 pub mut:
 	config  Config
 	configs map[string]Config
-}
-
-pub fn Config.new(raw string) Config {
-	return Config.new_opt(raw) or {
-		eprintln(err)
-		Config{}
-	}
-}
-
-pub fn Config.new_or_panic(raw string) Config {
-	return Config.new_opt(raw) or { panic(err) }
-}
-
-pub fn Config.new_opt(raw string) !Config {
-	return Config{parse(raw)!}
-}
-
-fn parse(raw string) !toml.Doc {
-	return if os.is_file(raw) {
-		toml.parse_file(raw)!
-	} else {
-		toml.parse_text(raw)!
-	}
 }
 
 pub fn ConfigManager.new(opts ConfigOptions) ConfigManager {
@@ -162,16 +129,4 @@ pub fn (cm ConfigManager) value(path string) toml.Any {
 
 pub fn (mut cm ConfigManager) value_or_default(key string, default toml.Any) toml.Any {
 	return cm.value(key).default_to(default)
-}
-
-pub fn (c Config) value(key string) toml.Any {
-	return c.data.value(key)
-}
-
-pub fn (c Config) to_any() toml.Any {
-	return c.data.to_any()
-}
-
-pub fn (mut c Config) value_or_default(key string, default toml.Any) toml.Any {
-	return c.value(key).default_to(default)
 }

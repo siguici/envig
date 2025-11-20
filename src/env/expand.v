@@ -1,4 +1,4 @@
-module envig
+module env
 
 import regex
 

@@ -1,4 +1,4 @@
-module envig
+module env
 
 fn test_expand() {
 	vars := {

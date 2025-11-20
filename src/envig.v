@@ -2,6 +2,8 @@ module envig
 
 import os
 import toml
+import config { ConfigManager }
+import env { Dotenv, EnvVars }
 
 @[params]
 pub struct EnvigOptions {
@@ -70,11 +72,11 @@ pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
 	return e.expand(e.config_or_default(key, default))
 }
 
-pub fn config(path string) toml.Any {
+pub fn get_config(path string) toml.Any {
 	return envig().config(path)
 }
 
-pub fn env(name string) string {
+pub fn get_env(name string) string {
 	return envig().env(name)
 }
 

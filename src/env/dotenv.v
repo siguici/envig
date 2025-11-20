@@ -1,57 +1,18 @@
-module envig
+module env
 
 import os
 import regex
 
-pub type EnvVars = map[string]string
-
-@[params]
-pub struct EnvOptions {
-	vars EnvVars = os.environ()
-}
-
 @[params]
 pub struct DotenvOptions {
 	EnvOptions
+pub:
 	type string
-}
-
-pub struct Env {
-mut:
-	vars EnvVars
 }
 
 pub struct Dotenv {
 	Env
 	type string = os.getenv('APP_ENV')
-}
-
-pub fn Env.new(options EnvOptions) Env {
-	return Env{options.vars}
-}
-
-pub fn (mut e Env) set(key string, value string) Env {
-	e.vars[key] = value
-
-	return e
-}
-
-pub fn (e Env) has(key string) bool {
-	return key in e.vars
-}
-
-pub fn (e Env) get(key string) string {
-	return e.get_or_default(key, '')
-}
-
-pub fn (e Env) get_or_default(key string, default string) string {
-	return e.vars[key] or { default }
-}
-
-pub fn (e Env) apply() {
-	for key, val in e.vars {
-		os.setenv(key, val, true)
-	}
 }
 
 pub fn Dotenv.new(options DotenvOptions) Dotenv {
@@ -142,6 +103,6 @@ fn (mut d Dotenv) parse_line(line string) {
 	}
 }
 
-fn (d Dotenv) expand(value string) string {
+pub fn (d Dotenv) expand(value string) string {
 	return expand(value, d.vars)
 }
