@@ -63,14 +63,17 @@ pub fn (mut e Envig) get(key string) string {
 	return v
 }
 
+pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
+	if v := e.cache[key] {
+		return v
+	}
+	return e.expand(e.config_or_default(key, default))
+}
+
 pub fn (mut e Envig) value(key string) toml.Any {
 	return toml.Any(e.get(key))
 }
 
 pub fn (mut e Envig) get_as[T](key string) T {
 	return T(e.value(key))
-}
-
-pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
-	return e.expand(e.config_or_default(key, default))
 }
