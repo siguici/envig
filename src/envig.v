@@ -18,10 +18,6 @@ pub struct Envig {
 	dotenv Dotenv
 }
 
-pub fn envig(options EnvigOptions) Envig {
-	return new(options)
-}
-
 pub fn new(options EnvigOptions) Envig {
 	return Envig.new(options)
 }
@@ -70,24 +66,4 @@ pub fn (e Envig) get_as[T](key string) T {
 
 pub fn (mut e Envig) get_or_default(key string, default toml.Any) string {
 	return e.expand(e.config_or_default(key, default))
-}
-
-pub fn get_config(path string) toml.Any {
-	return envig().config(path)
-}
-
-pub fn get_env(name string) string {
-	return envig().env(name)
-}
-
-pub fn get(key string) string {
-	return envig().get(key)
-}
-
-pub fn value(key string) toml.Any {
-	return envig().value(key)
-}
-
-pub fn get_as[T](key string) T {
-	return envig().get_as(key)
 }
