@@ -74,6 +74,50 @@ pub fn (mut e Envig) value(key string) toml.Any {
 	return toml.Any(e.get(key))
 }
 
-pub fn (mut e Envig) get_as[T](key string) T {
-	return T(e.value(key))
+pub fn (mut e Envig) string(key string) string {
+	return e.value(key).string()
+}
+
+pub fn (mut e Envig) int(key string) int {
+	return e.value(key).int()
+}
+
+pub fn (mut e Envig) i64(key string) i64 {
+	return e.value(key).i64()
+}
+
+pub fn (mut e Envig) u64(key string) u64 {
+	return e.value(key).u64()
+}
+
+pub fn (mut e Envig) f32(key string) f32 {
+	return e.value(key).f32()
+}
+
+pub fn (mut e Envig) f64(key string) f64 {
+	return e.value(key).f64()
+}
+
+pub fn (mut e Envig) bool(key string) bool {
+	return e.value(key).bool()
+}
+
+pub fn (mut e Envig) date(key string) toml.Date {
+	return e.value(key).date()
+}
+
+pub fn (mut e Envig) time(key string) toml.Time {
+	return e.value(key).time()
+}
+
+pub fn (mut e Envig) datetime(key string) toml.DateTime {
+	return e.value(key).datetime()
+}
+
+pub fn (mut e Envig) array(key string) []toml.Any {
+	return e.value(key).array()
+}
+
+pub fn (mut e Envig) map(key string) map[string]toml.Any {
+	return e.value(key).as_map()
 }
