@@ -48,8 +48,8 @@ import siguici.envig
 ```v
 import siguici.envig
 
-mut config := envig.ConfigManager.load()
-println(config.value('database.host'))
+mut config := envig.new()
+println(config.string('database.host'))
 ```
 
 #### Specify the config file and/or directory
@@ -57,11 +57,11 @@ println(config.value('database.host'))
 ```v
 import siguici.envig
 
-mut config := envig.ConfigManager.load(
+mut config := envig.new(
   file: 'config.toml'
   dir: 'config'
 )
-println(config.value('database.host'))
+println(config.string('database.host'))
 ```
 
 #### From a Single File
@@ -69,15 +69,15 @@ println(config.value('database.host'))
 ```v
 import siguici.envig
 
-mut config := envig.Config.new('config.toml')
-println(config.value('database.host'))
+mut config := envig.new(file: 'config.toml')
+println(config.string('database.host'))
 ```
 
 #### From a Directory
 
 ```v
-mut config := envig.Config.new('config')
-println(config.value('app.debug'))
+mut config := envig.new(dir: 'config')
+println(config.bool('app.debug'))
 ```
 
 #### From Raw TOML Text
@@ -88,8 +88,8 @@ toml_text := """
 host = "localhost"
 port = 5432
 """
-mut config := envig.Config.new(toml_text)
-println(config.value('database.port')) // 5432
+mut config := envig.new(raw: toml_text)
+println(config.int('database.port')) // 5432
 ```
 
 ---
@@ -101,8 +101,8 @@ println(config.value('database.port')) // 5432
 ```v
 import siguici.envig
 
-mut env := envig.Env.load('.env')
-println(env.get('APP_ENV'))
+mut config := envig.new(env: 'local')
+println(config.env('APP_NAME'))
 ```
 
 #### Expanding Variables Dynamically
@@ -114,8 +114,8 @@ DB_URL="postgres://user:password@localhost:5432/${APP_ENV}"
 ```
 
 ```v
-mut env := envig.Env.load('.env').expand()
-println(env.get('DB_URL')) // "postgres://user:password@localhost:5432/production"
+mut config := envig.new(env: 'production')
+println(config.env('DB_URL')) // "postgres://user:password@localhost:5432/production"
 ```
 
 ---
@@ -125,7 +125,7 @@ println(env.get('DB_URL')) // "postgres://user:password@localhost:5432/productio
 Envig provides a powerful unified interface combining environment and configuration:
 
 ```v
-mut e := envig.envig()
+mut e := envig.new()
 
 port := e.env_or_default('PORT', '8080')
 db_url := e.get('database.url')
@@ -139,7 +139,7 @@ println('Debug mode: $debug')
 Or specify custom options:
 
 ```v
-mut e := envig.envig(envig.EnvigOptions{
+mut e := envig.new(envig.EnvigOptions{
     dir: 'settings',
     file: 'app.toml',
     env: 'production',
