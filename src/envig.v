@@ -16,6 +16,8 @@ pub struct EnvigOptions {
 pub struct Envig {
 	ConfigManager
 	dotenv Dotenv
+mut:
+	cache map[string]string
 }
 
 pub fn new(options EnvigOptions) Envig {
@@ -52,15 +54,20 @@ pub fn (e Envig) expand(value toml.Any) string {
 	return e.dotenv.expand(value.string())
 }
 
-pub fn (e Envig) get(key string) string {
-	return e.expand(e.config(key))
+pub fn (mut e Envig) get(key string) string {
+	if v := e.cache[key] {
+		return v
+	}
+	v := e.expand(e.config(key))
+	e.cache[key] = v
+	return v
 }
 
-pub fn (e Envig) value(key string) toml.Any {
+pub fn (mut e Envig) value(key string) toml.Any {
 	return toml.Any(e.get(key))
 }
 
-pub fn (e Envig) get_as[T](key string) T {
+pub fn (mut e Envig) get_as[T](key string) T {
 	return T(e.value(key))
 }
 
